@@ -10,5 +10,5 @@
 ## Tarefa 2 sobre Engenharia Reversa
 > Coloque a imagem do PNG do seu diagrama como ilustrado abaixo (a imagem estará na pasta `image`):
 > 
-> ![Diagrama de Orquestração](images/Diagrama (1).png)
+> ![Diagrama de Orquestração](https://github.com/MatheusCod/MC536-2s2020/blob/master/lab01/images/Diagrama%20(1).png)
 
