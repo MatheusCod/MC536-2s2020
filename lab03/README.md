@@ -8,4 +8,4 @@
 
 > ![Captura Orange](./images/captura-orange.png)
 
-> [Orange File](./orange/lab222228.ows)
+> [Arquivo Orange](./orange/lab222228.ows)
