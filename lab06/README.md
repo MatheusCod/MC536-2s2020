@@ -12,7 +12,7 @@ Escreva uma sentença em Cypher que crie o medicamento de nome `Metamizole`, có
 
 ### Resolução
 ~~~cypher
-(escreva aqui a resolução em Cypher)
+CREATE (:Drug {drugbank: "DB04817", name:"Metamizole"})
 ~~~
 
 ## Exercício 2
@@ -21,7 +21,11 @@ Considerando que a `Dipyrone` e `Metamizole` são o mesmo medicamento com nomes 
 
 ### Resolução
 ~~~cypher
-(escreva aqui a resolução em Cypher)
+CREATE (a:Drug {name:"Dipyrone"});
+
+MATCH (a:Drug {name:"Dipyrone"})
+MATCH (b:Drug {name:"Metamizole"})
+CREATE ( (a)-[:SameAs]-> (b))
 ~~~
 
 ## Exercício 3
@@ -30,7 +34,8 @@ Use o `DELETE` para excluir o relacionamento que você criou (apenas ele).
 
 ### Resolução
 ~~~cypher
-(escreva aqui a resolução em Cypher)
+MATCH ((a)-[n:SameAs]->(b))
+DELETE (n)
 ~~~
 
 ## Exercício 4
