@@ -80,8 +80,8 @@ Proponha um tipo de análise e escreva uma sentença em Cypher que realize a an�
 ### Resolução
 Projeção para ligar medicamentos que possuem o mesmo efeito colateral.
 ~~~cypher
-MATCH (u:UseDrug)-[a]->(s:SideEffect)<-[b]-(u:UseDrug)
-MERGE (u)<-[r:DrugRelate]->(s)
+MATCH (p:Drug)-[a]->(s:SideEffect)<-[b]-(q:Drug)
+MERGE (p)<-[r:DrugRelate]->(q)
 ON CREATE SET r.weight=1
-ON MATCH SET r.weight=r.weight+1
+ON MATCH SET r.weight=r.weight+1;
 ~~~
