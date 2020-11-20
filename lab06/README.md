@@ -25,7 +25,7 @@ CREATE (a:Drug {name:"Dipyrone"});
 
 MATCH (a:Drug {name:"Dipyrone"})
 MATCH (b:Drug {name:"Metamizole"})
-CREATE ( (a)-[:SameAs]-> (b))
+CREATE ((a)-[:SameAs]-> (b))
 ~~~
 
 ## Exercício 3
