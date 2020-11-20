@@ -56,7 +56,18 @@ Construa um grafo ligando os medicamentos aos efeitos colaterais (com pesos asso
 
 ### Resolução
 ~~~cypher
-(escreva aqui a resolução em Cypher)
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/santanche/lab2learn/master/data/faers-2017/drug-use.csv' AS line
+CREATE (:UseDrug {idperson: line.idperson, codepathology: line.codepathology, codedrug: line.codedrug});
+
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/santanche/lab2learn/master/data/faers-2017/sideeffect.csv' AS line
+CREATE (:SideEffect {idPerson: line.idPerson, codePathology: line.codePathology});
+
+MATCH (u:UseDrug)
+MATCH (s:SideEffect)
+WHERE u.idperson = s.idPerson
+MERGE (d)-[r:SideDrug]->(s)
+ON CREATE SET r.weight=1
+ON MATCH SET r.weight=r.weight+1;
 ~~~
 
 ## Exercício 6
@@ -66,6 +77,10 @@ Que tipo de análise interessante pode ser feita com esse grafo?
 Proponha um tipo de análise e escreva uma sentença em Cypher que realize a análise.
 
 ### Resolução
+Projeção para ligar medicamentos que possuem o mesmo efeito colateral.
 ~~~cypher
-(escreva aqui a resolução em Cypher)
+MATCH (u:UseDrug)-[a]->(s:SideEffect)<-[b]-(u:UseDrug)
+MERGE (u)<-[r:DrugRelate]->(s)
+ON CREATE SET r.weight=1
+ON MATCH SET r.weight=r.weight+1
 ~~~
