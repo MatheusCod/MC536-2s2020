@@ -11,7 +11,26 @@
 Calcule o Pagerank do exemplo da Wikipedia em Cypher:
 
 ~~~cypher
-(escreva aqui a resolução em Cypher)
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/santanche/lab2learn/master/network/pagerank/pagerank-wikipedia.csv' AS line
+MERGE (p1:Page {name:line.source})
+MERGE (p2:Page {name:line.target})
+CREATE (p1)-[:LINKS]->(p2);
+
+CALL gds.graph.create(
+  'WikiprGraph',
+  'Page',
+  'LINKS'
+);
+
+CALL gds.pageRank.stream('WikiprGraph')
+YIELD nodeId, score
+RETURN gds.util.asNode(nodeId).name AS name, score
+ORDER BY score DESC, name ASC;
+
+CALL gds.pageRank.stream('WikiprGraph')
+YIELD nodeId, score
+MATCH (p:Page {name: gds.util.asNode(nodeId).name})
+SET p.pagerank = score
 ~~~
 
 ![PageRank](images/pagerank-cytoscape.png)
