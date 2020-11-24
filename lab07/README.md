@@ -44,7 +44,56 @@ SET p.pagerank = score
 Departing from a Drug-Drug graph created in a previous lab, whose relationship determines drugs taken together, apply a community detection in it to see the results:
 
 ~~~cypher
-(escreva aqui a resolução em Cypher)
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/santanche/lab2learn/master/data/faers-2017/drug.csv' AS line
+CREATE (:Drug {code: line.code, name: line.name});
+
+CREATE INDEX ON :Drug(code);
+
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/santanche/lab2learn/master/data/faers-2017/pathology.csv' AS line
+CREATE (:Pathology { code: line.code, name: line.name});
+
+CREATE INDEX ON :Pathology(code);
+
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/santanche/lab2learn/master/data/faers-2017/drug-use.csv' AS line
+MATCH (d:Drug {code: line.codedrug})
+MATCH (p:Pathology {code: line.codepathology})
+MERGE (d)-[t:Treats]->(p)
+ON CREATE SET t.weight=1
+ON MATCH SET t.weight=t.weight+1;
+
+MATCH (d1:Drug)-[a]->(p:Pathology)<-[b]-(d2:Drug)
+WHERE a.weight > 20 AND b.weight > 20
+MERGE (d1)<-[r:Relates]->(d2)
+ON CREATE SET r.weight=1
+ON MATCH SET r.weight=r.weight+1;
+
+MATCH (d1:Drug)<-[:Relates]->(d2:Drug)
+RETURN d1, d2
+LIMIT 20;
+
+CALL gds.graph.create(
+  'communityGraph',
+  'Drug',
+  {
+    Relates: {
+      orientation: 'UNDIRECTED'
+    }
+  }
+);
+
+CALL gds.louvain.stream('communityGraph')
+YIELD nodeId, communityId
+RETURN gds.util.asNode(nodeId).name AS name, communityId
+ORDER BY communityId ASC;
+
+CALL gds.louvain.stream('communityGraph')
+YIELD nodeId, communityId
+MATCH (p:Person {name: gds.util.asNode(nodeId).name})
+SET p.community = communityId;
+
+CALL gds.louvain.stream('communityGraph')
+YIELD nodeId, communityId
+RETURN gds.util.asNode(nodeId).name AS name, communityId;
 ~~~
 
 ![Comunidade](images/comunidade-cytoscape.png)
