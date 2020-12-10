@@ -96,7 +96,9 @@ Liste o nome de todas as classificações que estão apenas dois níveis imediat
 
 ### Resolução
 ~~~xquery
-(escreva aqui a resolução em XQuery)
+let $dron := doc('https://raw.githubusercontent.com/santanche/lab2learn/master/data/faers-2017-dron/dron.xml')
+for $d in ($dron//drug//drug//drug)/@name
+return {data($d), '&#xa;'}
 ~~~
 
 ## Questão 2
@@ -105,7 +107,11 @@ Apresente todas as classificações de um componente a sua escolha (diferente de
 
 ### Resolução
 ~~~xquery
-(escreva aqui a resolução em XQuery)
+let $dron := doc('https://raw.githubusercontent.com/santanche/lab2learn/master/data/faers-2017-dron/dron.xml')
+for $d in ($dron//drug[drug[drug/@name="METHENAMINE"]])
+let $gr := $d/@name
+group by $gr
+return {data($gr), '&#xa;'}
 ~~~
 
 ## Questão 3
