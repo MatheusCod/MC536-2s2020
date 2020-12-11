@@ -97,7 +97,7 @@ Liste o nome de todas as classificações que estão apenas dois níveis imediat
 ### Resolução
 ~~~xquery
 let $dron := doc('https://raw.githubusercontent.com/santanche/lab2learn/master/data/faers-2017-dron/dron.xml')
-for $d in ($dron//drug//drug//drug)/@name
+for $d in ($dron//*//*//*)/@name
 return {data($d), '&#xa;'}
 ~~~
 
