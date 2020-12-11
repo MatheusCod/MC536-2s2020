@@ -154,6 +154,7 @@ let $gr := $j/@name
 group by $gr
 order by $gr
 return {
-((concat(substring($i/text(), 7), '&#xa;', data($gr), " "), '&#xa;'), data($i/parent::Information/Synonym/text()), '&#xa;', '&#xa;')
+((concat(substring($i/text(), 7), '&#xa;', data($gr), " "), '&#xa;'), 
+data($i/parent::Information/Synonym/text()), '&#xa;', '&#xa;')
 }
 ~~~
