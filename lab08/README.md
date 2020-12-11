@@ -122,7 +122,9 @@ Liste todos os códigos ChEBI dos componentes disponíveis.
 
 #### Resolução
 ~~~xquery
-(escreva aqui a resolução em XQuery)
+let $pubchem := doc('https://raw.githubusercontent.com/santanche/lab2learn/master/data/pubchem/pubchem-chebi.xml')
+for $p in ($pubchem//RegistryID)
+return (substring($p/text(), 7), '&#xa;')
 ~~~
 
 ### Questão 3.2
@@ -131,7 +133,10 @@ Liste todos os códigos ChEBI e primeiro nome (sinônimo) de cada um dos compone
 
 #### Resolução
 ~~~xquery
-(escreva aqui a resolução em XQuery)
+let $pubchem := doc('https://raw.githubusercontent.com/santanche/lab2learn/master/data/pubchem/pubchem-chebi-synonyms.xml')
+for $i in ($pubchem//PC-DataSet//InformationList//Information/Synonym)
+where (substring($i/text(), 0, 6) = "CHEBI")
+return (substring($i/text(), 7), '&#xa;')
 ~~~
 
 ### Questão 3.3
