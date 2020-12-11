@@ -136,7 +136,7 @@ Liste todos os códigos ChEBI e primeiro nome (sinônimo) de cada um dos compone
 let $pubchem := doc('https://raw.githubusercontent.com/santanche/lab2learn/master/data/pubchem/pubchem-chebi-synonyms.xml')
 for $i in ($pubchem//PC-DataSet//InformationList//Information/Synonym)
 where (substring($i/text(), 0, 6) = "CHEBI")
-return (substring($i/text(), 7), '&#xa;')
+return (concat(substring($i/text(), 7), " ", $i/parent::Information/Synonym[1]/text()), '&#xa;')
 ~~~
 
 ### Questão 3.3
